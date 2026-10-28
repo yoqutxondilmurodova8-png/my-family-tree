@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Family Tree</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+  color: #383b32;
+  background: #f7f4ed;
+}
+
+header {
+  background: #526957;
+  color: white;
+  text-align: center;
+  padding: 42px 16px;
+}
+
+header h1 { font-size: 40px; margin: 0 0 12px; }
+header p { line-height: 1.6; }
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 25px 16px 45px;
+}
+
+.intro {
+  max-width: 750px;
+  margin: 10px auto 35px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.generation { margin: 38px 0; }
+
+.generation h2 {
+  text-align: center;
+  color: #526957;
+  margin-bottom: 8px;
+}
+
+.description {
+  text-align: center;
+  color: #73766b;
+  margin-bottom: 20px;
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.person {
+  background: white;
+  border: 1px solid #dedbce;
+  border-top: 4px solid #91a48c;
+  border-radius: 12px;
+  padding: 18px;
+  overflow-wrap: anywhere;
+  box-shadow: 0 4px 12px #33333308;
+}
+
+.person h3 {
+  font-size: 17px;
+  margin: 0 0 12px;
+}
+
+.person p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 7px 0;
+}
+
+.number {
+  color: #647b60;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+footer {
+  background: #526957;
+  color: white;
+  text-align: center;
+  padding: 22px;
+}
+
+@media (max-width: 500px) {
+  header h1 { font-size: 30px; }
+  .people { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>My Family Tree</h1>
+  <p>Discovering my roots, relatives, and family history</p>
+</header>
+
+<main>
+  <section class="intro">
+    <h2>About My Family</h2>
+    <p>
+      My family is an important part of my life.
+      This project introduces my relatives from different
+      generations and explains how we are connected.
+      By learning about my family history, I can better
+      understand my roots and appreciate our family heritage.
+    </p>
+    <p><strong>Family members included:</strong> <span id="total">35</span></p>
+  </section>
+
+  <div id="family-tree"></div>
+
+  <section class="intro">
+    <h2>My Family Heritage</h2>
+    <p>
+      Every family member has a unique story.
+      Our family history connects generations and helps
+      us preserve memories, traditions, and relationships.
+    </p>
+  </section>
+</main>
+
+<footer>
+  My Family Tree | University Assignment
+</footer>
+
+<script>
+// Replace the placeholder information with your real family details.
+// Do not invent unknown dates or places.
+
+const family = [
+  {
+    group: "My Immediate Family",
+    people: [
+      ["Me", "Myself"],
+      ["Add father's full name", "Father"],
+      ["Add mother's full name", "Mother"],
+      ["Add sibling's full name", "Sibling 1"],
+      ["Add sibling's full name", "Sibling 2"]
+    ]
+  },
+  {
+    group: "My Grandparents",
+    people: [
+      ["Add full name", "Paternal grandfather"],
+      ["Add full name", "Paternal grandmother"],
+      ["Add full name", "Maternal grandfather"],
+      ["Add full name", "Maternal grandmother"]
+    ]
+  },
+  {
+    group: "My Great-Grandparents",
+    people: [
+      ["Add full name", "Great-grandfather 1"],
+      ["Add full name", "Great-grandmother 1"],
+      ["Add full name", "Great-grandfather 2"],
+      ["Add full name", "Great-grandmother 2"]
+    ]
+  },
+  {
+    group: "My Aunts and Uncles",
+    people: [
+      ["Add full name", "Paternal aunt 1"],
+      ["Add full name", "Paternal aunt 2"],
+      ["Add full name", "Maternal sibling 1"],
+      ["Add full name", "Maternal sibling 2"]
+    ]
+  },
+  {
+    group: "My Cousins",
+    people: [
+      ["Add full name", "Child of paternal aunt 1"],
+      ["Add full name", "Child of paternal aunt 1"],
+      ["Add full name", "Child of paternal aunt 1"],
+      ["Add full name", "Child of paternal aunt 2"],
+      ["Add full name", "Child of paternal aunt 2"],
+      ["Add full name", "Child of paternal aunt 2"],
+      ["Add full name", "Child of uncle 1"],
+      ["Add full name", "Child of uncle 1"],
+      ["Add full name", "Child of uncle 1"]
+    ]
+  },
+  {
+    group: "My Extended Family",
+    people: [
+      ["Add full name", "Sister of paternal grandmother"],
+      ["Add full name", "Sister of maternal grandmother"],
+      ["Add full name", "Sibling of paternal grandfather 1"],
+      ["Add full name", "Sibling of paternal grandfather 2"],
+      ["Add full name", "Sibling of maternal grandfather"],
+      ["Add full name", "Husband of paternal aunt 1"],
+      ["Add full name", "Husband of paternal aunt 2"],
+      ["Add full name", "Wife of uncle"],
+      ["Add full name", "Child of grandfather's brother"]
+    ]
+  }
+];
+
+let number = 0;
+const tree = document.getElementById("family-tree");
+
+family.forEach(section => {
+  const sectionElement = document.createElement("section");
+  sectionElement.className = "generation";
+
+  const heading = document.createElement("h2");
+  heading.textContent = section.group;
+  sectionElement.appendChild(heading);
+
+  const description = document.createElement("p");
+  description.className = "description";
+  description.textContent = "Family members and their details";
+  sectionElement.appendChild(description);
+
+  const people = document.createElement("div");
+  people.className = "people";
+
+  section.people.forEach(person => {
+    number++;
+
+    const card = document.createElement("article");
+    card.className = "person";
+
+    const id = document.createElement("div");
+    id.className = "number";
+    id.textContent = "Family member #" + number;
+    card.appendChild(id);
+
+    const name = document.createElement("h3");
+    name.textContent = person[0];
+    card.appendChild(name);
+
+    const relationship = document.createElement("p");
+    relationship.innerHTML = "<strong>Relationship:</strong> ";
+    relationship.appendChild(document.createTextNode(person[1]));
+    card.appendChild(relationship);
+
+    const birth = document.createElement("p");
+    birth.innerHTML = "<strong>Date of birth:</strong> ";
+    birth.appendChild(document.createTextNode("Not added yet"));
+    card.appendChild(birth);
+
+    const place = document.createElement("p");
+    place.innerHTML = "<strong>Place of birth:</strong> ";
+    place.appendChild(document.createTextNode("Not added yet"));
+    card.appendChild(place);
+
+    const parents = document.createElement("p");
+    parents.innerHTML = "<strong>Parents:</strong> ";
+    parents.appendChild(document.createTextNode("Add names if known"));
+    card.appendChild(parents);
+
+    people.appendChild(card);
+  });
+
+  sectionElement.appendChild(people);
+  tree.appendChild(sectionElement);
+});
+
+document.getElementById("total").textContent = number;
+</script>
+</body>
+</html>
